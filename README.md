@@ -132,3 +132,4 @@ Este proyecto está bajo la Licencia MIT.
 - Juan David Gaitan y Nayely
 - Lizeth Mariana y Kennyan
 - Camilo Agudelo
+# SistemaGestionModular
