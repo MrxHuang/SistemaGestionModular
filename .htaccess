@@ -1,0 +1,59 @@
+# Prevenir listado de directorios
+Options -Indexes
+
+# Proteger archivos y directorios sensibles
+<FilesMatch "^(\.htaccess|\.htpasswd|config\.php|database\.php)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Denegar acceso a los directorios de sistema
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^config/.* - [F,L]
+    RewriteRule ^database/.* - [F,L]
+    RewriteRule ^includes/.* - [F,L]
+</IfModule>
+
+# Configuración de seguridad
+<IfModule mod_headers.c>
+    # Prevenir clickjacking
+    Header always append X-Frame-Options SAMEORIGIN
+    # Prevenir MIME-sniffing
+    Header always set X-Content-Type-Options nosniff
+    # Habilitar la protección XSS en navegadores modernos
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Configuración PHP
+<IfModule mod_php7.c>
+    # Ocultar información de PHP
+    php_flag expose_php Off
+    # Deshabilitar funciones peligrosas
+    php_value disable_functions exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source
+</IfModule>
+
+# Manejo de errores personalizado
+ErrorDocument 404 /Proyectos/Modular/404.php
+ErrorDocument 403 /Proyectos/Modular/403.php
+
+# Comprimir archivos para mejorar rendimiento
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript
+</IfModule>
+
+# Caché del navegador
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/pdf "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/x-javascript "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresDefault "access plus 2 days"
+</IfModule>
