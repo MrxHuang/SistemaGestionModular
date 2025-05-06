@@ -5,6 +5,8 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+include_once 'includes/utils.php';
+
 // Include database connection
 include_once 'config/database.php';
 
@@ -95,9 +97,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Set success message
                 $_SESSION['success'] = "Producto creado correctamente.";
                 
-                // Redirect to products page
-                header("location: ?module=productos&page=index");
-                exit();
+                // Redirect to products page using safe redirect
+                safe_redirect("?module=productos&page=index");
             } else {
                 echo "Oops! Algo salió mal. Por favor, inténtelo de nuevo más tarde.";
             }
