@@ -5,6 +5,9 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+// Include utils
+include_once 'includes/utils.php';
+
 // Include database connection
 include_once 'config/database.php';
 
@@ -35,9 +38,8 @@ if (isset($_GET['delete']) && !empty($_GET['delete'])) {
         $_SESSION['success'] = "Producto eliminado correctamente.";
     }
     
-    // Redirect to refresh page
-    header("Location: ?module=productos&page=index");
-    exit();
+    // Redirect to refresh page using safe redirect
+    safe_redirect("?module=productos&page=index");
 }
 
 // Configuración de paginación

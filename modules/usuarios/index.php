@@ -1,9 +1,12 @@
 <?php
 // Check if user is logged in and has admin privileges
-if (!isset($_SESSION['user_id']) || $_SESSION['rol'] !== 'admin') {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
     header("Location: modules/auth/login.php");
     exit();
 }
+
+// Include utils
+include_once 'includes/utils.php';
 
 // Include database connection
 include_once 'config/database.php';
@@ -29,9 +32,8 @@ if (isset($_GET['delete']) && !empty($_GET['delete'])) {
         $_SESSION['error'] = "No puede eliminar su propio usuario.";
     }
     
-    // Redirect to refresh page
-    header("Location: ?module=usuarios&page=index");
-    exit();
+    // Redirect to refresh page using safe redirect
+    safe_redirect("?module=usuarios&page=index");
 }
 
 // Get all users
